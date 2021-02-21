@@ -7,7 +7,6 @@ object PopularHashtags {
 
   def setupTwitter(): Unit = {
     import scala.io.Source
-
     val lines = Source.fromFile("data/twitter.txt")
     for (line <- lines.getLines) {
       val fields = line.split(" ")
@@ -28,13 +27,9 @@ object PopularHashtags {
 
   /** Our main function where the action happens */
   def main(args: Array[String]) {
-
     setupTwitter()
-
     val sc = new StreamingContext("local[*]", "PopularHashtags", Seconds(1))
-
     setupLogging()
-
     val tweets = TwitterUtils.createStream(ssc, None)
     val statuses = tweets.map(status => status.getText)
     val tweetWords = statuses.flatMap(tweetText => tweetText.split(" "))
